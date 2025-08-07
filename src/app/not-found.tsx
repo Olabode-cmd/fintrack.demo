@@ -10,7 +10,7 @@ export default function NotFound() {
           Page Not Found
         </h2>
         <p className="text-gray-500 mb-8">
-          The page you're looking for doesn&apos;t exist yet.
+          The page you&apos;re looking for doesn&apos;t exist yet.
         </p>
         <Link
           href="/"
