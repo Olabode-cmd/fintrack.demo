@@ -36,7 +36,7 @@ export default function TransactionsList({ data }: TransactionsListProps) {
         </div>
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2 bg-[#4B8B9F] text-black rounded-full hover:bg-[#4B8B9F]/90 flex items-center space-x-2 cursor-pointer"
+          className="px-4 py-2 bg-[#4B8B9F] text-black rounded-full hover:bg-[#4B8B9F]/90 flex items-center space-x-2 cursor-pointer w-fit"
         >
           <Plus size={16} />
           <span>Add Transaction</span>

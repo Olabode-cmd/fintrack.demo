@@ -104,7 +104,7 @@ export default function TransactionsTable({ data, isLoading = false }: Transacti
   });
 
   return (
-    <div className="bg-white rounded-lg border border-gray-100">
+    <div className="bg-white rounded-lg border border-gray-100 w-full">
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-medium text-gray-900">Transactions</h3>
@@ -132,14 +132,14 @@ export default function TransactionsTable({ data, isLoading = false }: Transacti
         />
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[500px]">
             <thead className="bg-gray-50">
               {table.getHeaderGroups().map(headerGroup => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map(header => (
                     <th
                       key={header.id}
-                      className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 whitespace-nowrap"
                       onClick={header.column.getToggleSortingHandler()}
                     >
                       <div className="flex items-center space-x-1">
@@ -162,7 +162,7 @@ export default function TransactionsTable({ data, isLoading = false }: Transacti
               {table.getRowModel().rows.map(row => (
                 <tr key={row.id} className="hover:bg-gray-50">
                   {row.getVisibleCells().map(cell => (
-                    <td key={cell.id} className="px-4 py-3 text-sm text-gray-900">
+                    <td key={cell.id} className="px-2 sm:px-4 py-3 text-sm text-gray-900 whitespace-nowrap">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                   ))}
