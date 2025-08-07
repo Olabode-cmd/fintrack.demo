@@ -3,6 +3,7 @@
 import { ReactNode, useState } from 'react';
 import { X } from 'lucide-react';
 import { sanitizeInput, sanitizeNumber } from '../utils/security';
+import { Transaction } from '../types';
 
 interface BaseModalProps {
   isOpen: boolean;
@@ -40,7 +41,7 @@ export function BaseModal({ isOpen, onClose, title, children }: BaseModalProps) 
 interface AddTransactionModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAdd: (transaction: any) => void;
+  onAdd: (transaction: Transaction) => void;
 }
 
 export function AddTransactionModal({ isOpen, onClose, onAdd }: AddTransactionModalProps) {
