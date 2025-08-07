@@ -131,19 +131,19 @@ export default function TransactionsTable({ data, isLoading = false }: Transacti
           description={searchQuery || typeFilter !== 'all' ? "Try adjusting your search or filters" : "No transactions available"}
         />
       ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[500px]">
+        <div className="overflow-x-auto w-full">
+          <table className="table-auto w-full">
             <thead className="bg-gray-50">
               {table.getHeaderGroups().map(headerGroup => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map(header => (
                     <th
                       key={header.id}
-                      className="px-2 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 whitespace-nowrap"
+                      className="px-1 sm:px-3 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 break-words"
                       onClick={header.column.getToggleSortingHandler()}
                     >
                       <div className="flex items-center space-x-1">
-                        <span>
+                        <span className="break-words">
                           {flexRender(header.column.columnDef.header, header.getContext())}
                         </span>
                         <span className="text-gray-400">
@@ -162,7 +162,7 @@ export default function TransactionsTable({ data, isLoading = false }: Transacti
               {table.getRowModel().rows.map(row => (
                 <tr key={row.id} className="hover:bg-gray-50">
                   {row.getVisibleCells().map(cell => (
-                    <td key={cell.id} className="px-2 sm:px-4 py-3 text-sm text-gray-900 whitespace-nowrap">
+                    <td key={cell.id} className="px-1 sm:px-3 py-2 sm:py-3 text-xs sm:text-sm text-gray-900 break-words">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                   ))}
