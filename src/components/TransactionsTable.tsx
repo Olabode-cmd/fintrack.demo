@@ -1,24 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import {
   useReactTable,
   getCoreRowModel,
   getSortedRowModel,
   getPaginationRowModel,
+  getFilteredRowModel,
   flexRender,
   createColumnHelper,
   SortingState,
 } from '@tanstack/react-table';
+import { Filter } from 'lucide-react';
 
-interface Transaction {
-  id: number;
-  date: string;
-  remark: string;
-  amount: number;
-  currency: string;
-  type: string;
-}
+import { Transaction } from '../types';
+import { useSearch } from '../context/SearchContext';
 
 interface TransactionsTableProps {
   data: Transaction[];
@@ -46,11 +42,10 @@ const columns = [
   columnHelper.accessor('type', {
     header: 'Type',
     cell: info => (
-      <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-        info.getValue() === 'Credit' 
-          ? 'bg-green-100 text-green-800' 
-          : 'bg-red-100 text-red-800'
-      }`}>
+      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+        <span className={`w-2 h-2 rounded-full mr-2 ${
+          info.getValue() === 'Credit' ? 'bg-green-500' : 'bg-red-500'
+        }`}></span>
         {info.getValue()}
       </span>
     ),
@@ -59,9 +54,31 @@ const columns = [
 
 export default function TransactionsTable({ data }: TransactionsTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [typeFilter, setTypeFilter] = useState<string>('all');
+  const { searchQuery } = useSearch();
+
+  const filteredData = useMemo(() => {
+    let filtered = data;
+    
+    // Search filter
+    if (searchQuery) {
+      filtered = filtered.filter(transaction => 
+        transaction.remark.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        transaction.amount.toString().includes(searchQuery) ||
+        transaction.type.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    
+    // Type filter
+    if (typeFilter !== 'all') {
+      filtered = filtered.filter(transaction => transaction.type === typeFilter);
+    }
+    
+    return filtered;
+  }, [data, searchQuery, typeFilter]);
 
   const table = useReactTable({
-    data,
+    data: filteredData,
     columns,
     state: {
       sorting,
@@ -70,15 +87,33 @@ export default function TransactionsTable({ data }: TransactionsTableProps) {
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     initialState: {
       pagination: {
-        pageSize: 5,
+        pageSize: 10,
       },
     },
   });
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100">
+    <div className="bg-white rounded-lg border border-gray-100">
+      <div className="p-4 border-b border-gray-200">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-medium text-gray-900">Transactions</h3>
+          <div className="flex items-center space-x-2">
+            <Filter size={16} className="text-gray-500" />
+            <select 
+              value={typeFilter} 
+              onChange={(e) => setTypeFilter(e.target.value)}
+              className="text-sm text-gray-700 border border-gray-300 rounded px-2 py-1 cursor-pointer"
+            >
+              <option value="all">All Types</option>
+              <option value="Credit">Credit</option>
+              <option value="Debit">Debit</option>
+            </select>
+          </div>
+        </div>
+      </div>
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead className="bg-gray-50">

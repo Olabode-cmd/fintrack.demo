@@ -27,75 +27,75 @@ export const statsData = [
 
 export const transactionsData = [
   {
-    id: 1,
+    id: '1',
     date: '2023-10-01',
     remark: 'Salary',
     amount: 3000,
     currency: 'USD',
-    type: 'Credit'
+    type: 'Credit' as const
   },
   {
-    id: 2,
+    id: '2',
     date: '2023-10-02',
     remark: 'Groceries',
     amount: -150,
     currency: 'USD',
-    type: 'Debit'
+    type: 'Debit' as const
   },
   {
-    id: 3,
+    id: '3',
     date: '2023-10-03',
     remark: 'Gym Membership',
     amount: -50,
     currency: 'USD',
-    type: 'Debit'
+    type: 'Debit' as const
   },
   {
-    id: 4,
+    id: '4',
     date: '2023-10-04',
     remark: 'Dinner',
     amount: -40,
     currency: 'USD',
-    type: 'Debit'
+    type: 'Debit' as const
   },
   {
-    id: 5,
+    id: '5',
     date: '2023-10-05',
     remark: 'Movie Tickets',
     amount: -30,
     currency: 'USD',
-    type: 'Debit'
+    type: 'Debit' as const
   },
   {
-    id: 6,
+    id: '6',
     date: '2023-10-06',
     remark: 'Rent',
     amount: -1200,
     currency: 'USD',
-    type: 'Debit'
+    type: 'Debit' as const
   },
   {
-    id: 7,
+    id: '7',
     date: '2023-10-07',
     remark: 'Utilities',
     amount: -100,
     currency: 'USD',
-    type: 'Debit'
+    type: 'Debit' as const
   },
   {
-    id: 8,
+    id: '8',
     date: '2023-10-08',
     remark: 'Car Payment',
     amount: -400,
     currency: 'USD',
-    type: 'Debit'
+    type: 'Debit' as const
   },
   {
-    id: 9,
+    id: '9',
     date: '2023-10-09',
     remark: 'Insurance',
     amount: -200,
     currency: 'USD',
-    type: 'Debit'
+    type: 'Debit' as const
   }
 ];

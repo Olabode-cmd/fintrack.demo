@@ -3,6 +3,7 @@
 import Header from './Header';
 import Sidebar from './Sidebar';
 import { SidebarProvider, useSidebar } from '../context/SidebarContext';
+import { SearchProvider } from '../context/SearchContext';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -12,7 +13,7 @@ function LayoutContent({ children }: DashboardLayoutProps) {
   const { isOpen } = useSidebar();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <Header />
       <div className="flex">
         <Sidebar />
@@ -29,7 +30,9 @@ function LayoutContent({ children }: DashboardLayoutProps) {
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <SidebarProvider>
-      <LayoutContent>{children}</LayoutContent>
+      <SearchProvider>
+        <LayoutContent>{children}</LayoutContent>
+      </SearchProvider>
     </SidebarProvider>
   );
 }

@@ -14,19 +14,19 @@ export default function Sidebar() {
 
   return (
     <>
-      <div className={`fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden ${isOpen ? 'block' : 'hidden'}`} 
+      <div className={`fixed top-16 left-0 right-0 bottom-0 bg-black/50 z-20 lg:hidden ${isOpen ? 'block' : 'hidden'}`} 
            onClick={toggle} />
       
-      <aside className={`fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-white border-r border-gray-100 z-30 transform transition-all duration-300 lg:top-0 lg:h-screen lg:z-0 ${isOpen ? 'translate-x-0 lg:translate-x-0' : '-translate-x-full lg:-translate-x-64'}`}>
+      <aside className={`fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-white z-30 transform transition-all duration-300 lg:top-16 lg:h-[calc(100vh-4rem)] lg:z-0 ${isOpen ? 'translate-x-0 lg:translate-x-0' : '-translate-x-full lg:-translate-x-64'}`}>
         <div className="p-6">
           <nav className="space-y-2">
             {routes.map((route) => (
               <a
                 key={route.name}
                 href={route.href}
-                className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                className={`block px-4 py-3 rounded-full text-sm font-medium transition-colors ${
                   route.active 
-                    ? 'bg-brand text-white' 
+                    ? 'bg-[#4B8B9F]/30 text-[#4B8B9F]' 
                     : 'text-gray-600 hover:bg-gray-50'
                 }`}
               >
