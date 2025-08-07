@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FinTrack - Personal Finance Dashboard
 
-## Getting Started
+A modern, secure financial tracking application built with Next.js, TypeScript, and TanStack Table. Features comprehensive transaction management, real-time search, filtering capabilities, and robust security measures.
 
-First, run the development server:
+## 🚀 Features Implemented
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Core Dashboard
+- **Header Navigation**: FinTrack logo, search functionality, profile dropdown with logout
+- **Sidebar Navigation**: Responsive sidebar with active states and brand color theming
+- **Wallet Ledger**: Main dashboard with active status indicator and user avatars
+- **Tab Navigation**: Functional Overview and Transactions tabs
+
+### Summary Cards
+- **Financial Overview**: Total Balance ($12,345), Credits ($7,890), Debits ($4,455), Transactions (150)
+- **Dynamic Indicators**: Color-coded change percentages with proper positive/negative styling
+- **Reusable Components**: Consistent StatCard component used across all sections
+
+### Transaction Management
+- **Sortable Table**: Full-featured table with sorting, pagination, and filtering
+- **Advanced Search**: Global search across transaction remarks, amounts, and types
+- **Type Filtering**: Filter by Credit/Debit with visual dot indicators
+- **Transaction List View**: Card-based layout with summary statistics
+- **Add Transaction Modal**: Secure form for creating new transactions
+
+### Security Implementation
+**Security Utils (`src/utils/security.ts`)**:
+- **Input Sanitization**: Prevents XSS attacks by removing dangerous characters (`<>`, `script`, `javascript:`)
+- **SQL Injection Protection**: Strips SQL injection patterns (`--`, `;`, quotes)
+- **Number Validation**: Safely converts user input to numbers, handling invalid data
+- **Real-time Protection**: Applied to all form inputs as users type
+
+```typescript
+// Example: How security works
+sanitizeInput("<script>alert('xss')</script>Hello") // Returns: "Hello"
+sanitizeNumber("$1,234.56abc") // Returns: 1234.56
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Error Handling
+- **Empty States**: Graceful handling when no data is available
+- **Loading States**: Spinner components during data operations
+- **Data Validation**: Type checking and invalid data filtering
+- **404 Page**: Custom not-found page maintaining layout consistency
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Technical Architecture
+- **TypeScript**: Fully typed with proper interfaces (`Transaction`, `DashboardSummary`)
+- **Component Architecture**: Reusable, modular components
+- **State Management**: Context API for search, local state for modals
+- **Responsive Design**: Mobile-first approach with Tailwind CSS
+- **Accessibility**: Proper cursor states, keyboard navigation, ARIA labels
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛡️ Security Features
 
-## Learn More
+The application implements comprehensive security measures:
 
-To learn more about Next.js, take a look at the following resources:
+1. **Input Sanitization**: All user inputs are sanitized against XSS and injection attacks
+2. **Type Safety**: TypeScript ensures data integrity throughout the application
+3. **Validation**: Form validation prevents invalid data submission
+4. **Secure Defaults**: Safe fallbacks for all data operations
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🏗️ Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/                 # Next.js app router
+├── components/          # Reusable UI components
+├── context/            # React context providers
+├── data/               # Sample data and types
+├── types/              # TypeScript interfaces
+└── utils/              # Security and utility functions
+```
 
-## Deploy on Vercel
+## 🚀 Getting Started
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm install
+npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
+
+## 📱 Features Walkthrough
+
+1. **Dashboard Overview**: View financial summary with interactive cards
+2. **Search & Filter**: Use header search or table filters to find transactions
+3. **Add Transactions**: Click "Add Transaction" to open secure modal form
+4. **Tab Navigation**: Switch between Overview and detailed Transactions view
+5. **Responsive Design**: Works seamlessly on desktop and mobile devices
+
+## 🔒 Security Implementation Details
+
+The `sanitizeInput` function provides multi-layer protection:
+- Removes HTML tags that could execute scripts
+- Strips JavaScript protocol handlers
+- Eliminates SQL injection patterns
+- Cleans dangerous characters while preserving legitimate content
+
+This ensures all user input is safe before processing or storage, protecting against common web vulnerabilities.

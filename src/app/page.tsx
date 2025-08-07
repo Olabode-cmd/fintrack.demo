@@ -3,11 +3,13 @@
 import DashboardLayout from '../components/DashboardLayout';
 import StatCard from '../components/StatCard';
 import TransactionsTable from '../components/TransactionsTable';
+import TransactionsList from '../components/TransactionsList';
 import Button from '../components/Button';
 import { statsData, transactionsData } from '../data/dashboardData';
 import { ChevronDown, MoreHorizontal } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
+import EmptyState from '../components/EmptyState';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<'overview' | 'transactions'>('overview');
@@ -66,15 +68,21 @@ export default function Home() {
             <div className="mb-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Summary</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {statsData.map((stat, index) => (
-                  <StatCard
-                    key={index}
-                    title={stat.title}
-                    value={stat.value}
-                    change={stat.change}
-                    isPositive={stat.isPositive}
-                  />
-                ))}
+                {statsData && statsData.length > 0 ? (
+                  statsData.map((stat, index) => (
+                    <StatCard
+                      key={index}
+                      title={stat.title}
+                      value={stat.value}
+                      change={stat.change}
+                      isPositive={stat.isPositive}
+                    />
+                  ))
+                ) : (
+                  <div className="col-span-full">
+                    <EmptyState title="No summary data" description="Summary statistics are not available" />
+                  </div>
+                )}
               </div>
             </div>
 
@@ -85,9 +93,7 @@ export default function Home() {
         )}
 
         {activeTab === 'transactions' && (
-          <div className="p-8 text-center text-gray-500">
-            Transaction content not provided
-          </div>
+          <TransactionsList data={transactionsData} />
         )}
       </div>
     </DashboardLayout>

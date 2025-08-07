@@ -15,9 +15,12 @@ import { Filter } from 'lucide-react';
 
 import { Transaction } from '../types';
 import { useSearch } from '../context/SearchContext';
+import EmptyState from './EmptyState';
+import LoadingSpinner from './LoadingSpinner';
 
 interface TransactionsTableProps {
   data: Transaction[];
+  isLoading?: boolean;
 }
 
 const columnHelper = createColumnHelper<Transaction>();
@@ -52,15 +55,21 @@ const columns = [
   }),
 ];
 
-export default function TransactionsTable({ data }: TransactionsTableProps) {
+export default function TransactionsTable({ data, isLoading = false }: TransactionsTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const { searchQuery } = useSearch();
 
   const filteredData = useMemo(() => {
-    let filtered = data;
+    if (!data || !Array.isArray(data)) return [];
     
-    // Search filter
+    let filtered = data.filter(transaction => 
+      transaction && 
+      typeof transaction.remark === 'string' && 
+      typeof transaction.amount === 'number' &&
+      typeof transaction.type === 'string'
+    );
+    
     if (searchQuery) {
       filtered = filtered.filter(transaction => 
         transaction.remark.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -69,7 +78,6 @@ export default function TransactionsTable({ data }: TransactionsTableProps) {
       );
     }
     
-    // Type filter
     if (typeFilter !== 'all') {
       filtered = filtered.filter(transaction => transaction.type === typeFilter);
     }
@@ -114,46 +122,56 @@ export default function TransactionsTable({ data }: TransactionsTableProps) {
           </div>
         </div>
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-gray-50">
-            {table.getHeaderGroups().map(headerGroup => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map(header => (
-                  <th
-                    key={header.id}
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                    onClick={header.column.getToggleSortingHandler()}
-                  >
-                    <div className="flex items-center space-x-1">
-                      <span>
-                        {flexRender(header.column.columnDef.header, header.getContext())}
-                      </span>
-                      <span className="text-gray-400">
-                        {{
-                          asc: '↑',
-                          desc: '↓',
-                        }[header.column.getIsSorted() as string] ?? '↕'}
-                      </span>
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {table.getRowModel().rows.map(row => (
-              <tr key={row.id} className="hover:bg-gray-50">
-                {row.getVisibleCells().map(cell => (
-                  <td key={cell.id} className="px-4 py-3 text-sm text-gray-900">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : filteredData.length === 0 ? (
+        <EmptyState 
+          title="No transactions found" 
+          description={searchQuery || typeFilter !== 'all' ? "Try adjusting your search or filters" : "No transactions available"}
+        />
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50">
+              {table.getHeaderGroups().map(headerGroup => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map(header => (
+                    <th
+                      key={header.id}
+                      className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
+                      <div className="flex items-center space-x-1">
+                        <span>
+                          {flexRender(header.column.columnDef.header, header.getContext())}
+                        </span>
+                        <span className="text-gray-400">
+                          {{
+                            asc: '↑',
+                            desc: '↓',
+                          }[header.column.getIsSorted() as string] ?? '↕'}
+                        </span>
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {table.getRowModel().rows.map(row => (
+                <tr key={row.id} className="hover:bg-gray-50">
+                  {row.getVisibleCells().map(cell => (
+                    <td key={cell.id} className="px-4 py-3 text-sm text-gray-900">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
       
       <div className="px-4 py-3 border-t border-gray-200 flex items-center justify-between">
         <div className="flex items-center space-x-2">
